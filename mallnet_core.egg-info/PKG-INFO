@@ -1,0 +1,21 @@
+Metadata-Version: 2.1
+Name: mallnet-core
+Version: 0.1.0
+Summary: Multi-mall Internet management system with MikroTik integration
+Author-email: Takesure Mamvota <dev@mallnet.local>
+License: MIT
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi>=0.110
+Requires-Dist: uvicorn[standard]>=0.27
+Requires-Dist: sqlalchemy>=2.0
+Requires-Dist: alembic>=1.13
+Requires-Dist: pydantic-settings>=2.0
+Requires-Dist: python-dotenv>=1.0
+Requires-Dist: psycopg2-binary>=2.9
+Provides-Extra: dev
+Requires-Dist: pytest>=7.4; extra == "dev"
+Requires-Dist: httpx>=0.27; extra == "dev"
+Requires-Dist: black>=24.0; extra == "dev"
+Requires-Dist: isort>=5.13; extra == "dev"
+Requires-Dist: flake8>=7.0; extra == "dev"

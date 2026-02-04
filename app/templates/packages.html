@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Select Internet Package</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f5f7fa;
+      padding: 20px;
+    }
+    .container {
+      max-width: 420px;
+      margin: auto;
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.08);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .package {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .package:hover {
+      background: #f0f6ff;
+      border-color: #2563eb;
+    }
+    .price {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      background: #2563eb;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Select Package</h1>
+
+  {% for p in packages %}
+  <form method="post" action="/api/v1/subscriptions">
+    <input type="hidden" name="mall_id" value="{{ mall_id }}">
+    <input type="hidden" name="mac_address" value="{{ mac }}">
+    <input type="hidden" name="package_id" value="{{ p.id }}">
+
+    <div class="package" onclick="this.closest('form').submit()">
+      <div>{{ p.name }}</div>
+      <div class="price">${{ p.price }}</div>
+      <div>{{ p.duration_days }} day(s)</div>
+    </div>
+  </form>
+  {% endfor %}
+</div>
+
+</body>
+</html>
