@@ -1,0 +1,87 @@
+# ----------------------
+# Python cache & bytecode
+# ----------------------
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ----------------------
+# Virtual environments
+# ----------------------
+venv/
+.env/
+.venv/
+env/
+ENV/
+
+# ----------------------
+# Environment variables
+# ----------------------
+.env
+.env.local
+.env.prod
+
+# ----------------------
+# Build & packaging
+# ----------------------
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# ----------------------
+# Logs & runtime files
+# ----------------------
+*.log
+logs/
+*.sqlite3
+*.db
+
+# ----------------------
+# Jupyter Notebook
+# ----------------------
+.ipynb_checkpoints/
+
+# ----------------------
+# Pytest / coverage
+# ----------------------
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ----------------------
+# IDEs & editors
+# ----------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ----------------------
+# OS files
+# ----------------------
+.DS_Store
+Thumbs.db
+
+# ----------------------
+# FastAPI / Django extras
+# ----------------------
+staticfiles/
+media/
+*.pid
+
+# ----------------------
+# ML / Data Science
+# ----------------------
+data/
+models/
+checkpoints/
+*.h5
+*.pkl
+*.joblib
+
+# ----------------------
+# Docker
+# ----------------------
+*.tar
