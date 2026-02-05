@@ -1,6 +1,4 @@
-from __future__ import annotations
-
-from typing import List, Type
+from typing import List, Optional, Type
 
 from sqlalchemy.orm import Session
 from app.models.router import Router
@@ -32,14 +30,14 @@ class RouterRepository:
         self.db.refresh(router)
         return router
 
-    def get_by_mall(self, mall_id: int) -> Router | None:
+    def get_by_mall(self, mall_id: int) -> Optional[Router]:
         return (
             self.db.query(Router)
             .filter(Router.mall_id == mall_id)
             .first()
         )
 
-    def get_by_id(self, router_id: int) -> Router | None:
+    def get_by_id(self, router_id: int) -> Optional[Router]:
         return (
             self.db.query(Router)
             .filter(Router.id == router_id)

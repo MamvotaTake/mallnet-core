@@ -9,8 +9,8 @@ def generate_voucher_qr(
     code: str,
     pin: str,
 ):
-    base_url = "http://127.0.0.1:8000/login"
-    qr_url = f"{base_url}?username={code}&password={pin}"
+    base_url = "http://localhost/login"
+    qr_url = f"{base_url}?voucher={code}"
 
     # Generate QR
     qr = qrcode.QRCode(

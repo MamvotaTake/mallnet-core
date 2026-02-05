@@ -1,10 +1,13 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, UniqueConstraint
 from sqlalchemy.sql import func
 from app.database.base import Base
 
 
 class User(Base):
     __tablename__ = "users"
+    __table_args__ = (
+        UniqueConstraint("mall_id", "mac_address", name="uq_users_mall_mac"),
+    )
 
     id = Column(Integer, primary_key=True, index=True)
 
@@ -15,7 +18,7 @@ class User(Base):
         index=True,
     )
 
-    mac_address = Column(String, nullable=True, index=True)
+    mac_address = Column(String, nullable=False, index=True)
 
     created_at = Column(
         DateTime(timezone=True),
