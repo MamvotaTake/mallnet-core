@@ -1,6 +1,5 @@
 from app.tasks.celery_app import celery_app
 from app.database.session import SessionLocal
-from app.repositories.subscription_repository import SubscriptionRepository
 from app.services.subscription_service import SubscriptionService
 
 
@@ -8,15 +7,9 @@ from app.services.subscription_service import SubscriptionService
 def expire_subscriptions():
     db = SessionLocal()
     try:
-        repo = SubscriptionRepository(db)
         service = SubscriptionService(db)
+        count = service.expire_subscriptions()
 
-        expired = repo.get_expired_active()
-
-        for subscription in expired:
-            service.subscription_repo.deactivate(subscription)
-            service._disable_hotspot_user(subscription.user_id)
-
-        return f"Expired {len(expired)} subscriptions"
+        return f"Expired {count} subscriptions"
     finally:
         db.close()

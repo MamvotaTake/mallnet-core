@@ -98,9 +98,11 @@ def generate_voucher_pdf(
         text_x = x + 20
         text_y = y + 70
 
+        voucher_profile = v.get("profile") or v.get("mikrotik_profile")
+
         # PLAN (primary)
         c.setFont("Helvetica-Bold", 12)
-        c.drawString(text_x, text_y, f"PLAN: {v['profile']}")
+        c.drawString(text_x, text_y, f"PLAN: {voucher_profile}")
 
         # CODE
         c.setFont("Helvetica", 10)
@@ -110,9 +112,10 @@ def generate_voucher_pdf(
         c.drawString(text_x, text_y - 30, f"PIN:  {v['pin']}")
 
         # Footer
+        login_url = f"http://localhost/login?voucher={v['code']}"
         c.setFont("Helvetica", 8)
         c.drawString(text_x, text_y - 50, "Scan QR or visit:")
-        c.drawString(text_x, text_y - 62, "http://localhost/login")
+        c.drawString(text_x, text_y - 62, login_url)
 
         # -------------------------------
         # GRID MOVE

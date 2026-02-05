@@ -1,4 +1,7 @@
 import routeros_api
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class MikroTikClient:
@@ -11,15 +14,19 @@ class MikroTikClient:
         self.api = None
 
     def connect(self):
-        self.connection = routeros_api.RouterOsApiPool(
-            self.host,
-            username=self.username,
-            password=self.password,
-            port=self.port,
-            plaintext_login=True,
-        )
-        api = self.connection.get_api()
-        return api
+        try:
+            self.connection = routeros_api.RouterOsApiPool(
+                self.host,
+                username=self.username,
+                password=self.password,
+                port=self.port,
+                plaintext_login=True,
+            )
+            self.api = self.connection.get_api()
+            return self.api
+        except Exception as exc:
+            logger.exception("Failed to connect to MikroTik API at %s", self.host)
+            raise ConnectionError("Failed to connect to MikroTik API") from exc
 
     def create_mac_user(self, mac_address: str, profile: str):
         users = self.api.get_resource("/ip/hotspot/user")

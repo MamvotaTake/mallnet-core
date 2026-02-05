@@ -10,6 +10,12 @@ class Voucher(Base):
 
     code = Column(String, unique=True, nullable=False, index=True)
 
+    pin = Column(String, nullable=False)
+
+    mikrotik_profile = Column(String, nullable=False)
+
+    duration_days = Column(Integer, nullable=False)
+
     package_id = Column(
         Integer,
         ForeignKey("internet_packages.id"),

@@ -1,6 +1,4 @@
-from __future__ import annotations
-
-from typing import List, Type
+from typing import List, Optional, Type
 
 from sqlalchemy.orm import Session
 from app.models.mall import Mall
@@ -17,7 +15,7 @@ class MallRepository:
         self.db.refresh(mall)
         return mall
 
-    def get_by_id(self, mall_id: int) -> Mall | None:
+    def get_by_id(self, mall_id: int) -> Optional[Mall]:
         return (
             self.db.query(Mall)
             .filter(Mall.id == mall_id)
