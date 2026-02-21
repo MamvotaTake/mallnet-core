@@ -41,27 +41,47 @@ class HotspotService:
     # MAC-based users (already existing)
     # -------------------------
     def create_mac_user(self, mac_address: str, profile: str):
+        self.create_or_update_mac_user(
+            mac_address=mac_address,
+            profile=profile,
+            disabled=False,
+        )
+
+    def create_or_update_mac_user(
+            self,
+            mac_address: str,
+            profile: str,
+            disabled: bool = False,
+    ):
+        """
+        Idempotent MAC user handler:
+        - If MAC exists → update profile / disabled
+        - If MAC does not exist → create it
+        """
+
         users = self.users.get(name=mac_address)
 
         if users:
             user = users[0]
             user_id = user.get(".id") or user.get("id")
 
-            if user_id:
-                self.users.set(
-                    id=user_id,
-                    profile=profile,
-                    disabled="no",
-                )
+            if not user_id:
+                return
+
+            self.users.set(
+                id=user_id,
+                profile=profile,
+                disabled="yes" if disabled else "no",
+            )
             return
 
+        # Create new MAC-based hotspot user
         self.users.add(
             name=mac_address,
             mac_address=mac_address,
             profile=profile,
-            disabled="no",
+            disabled="yes" if disabled else "no",
         )
-
     def disable_mac_user(self, mac_address: str):
         users = self.users.get(name=mac_address)
         if not users:

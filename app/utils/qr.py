@@ -3,49 +3,77 @@ import os
 from PIL import Image, ImageDraw, ImageFont
 
 
-def generate_voucher_qr(
-    mall_id: int,
-    profile: str,
-    code: str,
-    pin: str,
-):
+def generate_voucher_qr(mall_id, profile, code, pin):
     base_url = "http://localhost/login"
     qr_url = f"{base_url}?voucher={code}"
 
-    # Generate QR
+    # --- Generate QR ---
     qr = qrcode.QRCode(
         version=1,
-        box_size=10,
-        border=4,
+        box_size=8,
+        border=3,
     )
     qr.add_data(qr_url)
     qr.make(fit=True)
 
-    qr_img = qr.make_image(fill_color="black", back_color="white").convert("RGB")
+    qr_img = qr.make_image(
+        fill_color="black",
+        back_color="white"
+    ).convert("RGB")
 
-    # Add text area below QR
-    width, height = qr_img.size
-    extra_height = 120
-    new_img = Image.new("RGB", (width, height + extra_height), "white")
-    new_img.paste(qr_img, (0, 0))
+    qr_w, qr_h = qr_img.size
 
-    draw = ImageDraw.Draw(new_img)
+    # --- Canvas ---
+    width = qr_w + 40
+    height = qr_h + 160
+    img = Image.new("RGB", (width, height), "white")
+    draw = ImageDraw.Draw(img)
 
+    # Center QR
+    img.paste(qr_img, ((width - qr_w) // 2, 15))
+
+    # --- Fonts ---
     try:
-        font = ImageFont.truetype("DejaVuSans-Bold.ttf", 22)
+        plan_font = ImageFont.truetype("DejaVuSans-Bold.ttf", 24)
+        text_font = ImageFont.truetype("DejaVuSans.ttf", 20)
     except:
-        font = ImageFont.load_default()
+        plan_font = text_font = ImageFont.load_default()
 
-    text_y = height + 10
-    draw.text((20, text_y),     f"CODE: {code}", fill="black", font=font)
-    draw.text((20, text_y+35),  f"PIN:  {pin}", fill="black", font=font)
-    draw.text((20, text_y+70),  f"PLAN: {profile}", fill="black", font=font)
+    y = qr_h + 35
 
-    # Save
+    # PLAN (ONCE)
+    draw.text(
+        (width // 2, y),
+        f"PLAN: {profile.upper()}",
+        fill="black",
+        font=plan_font,
+        anchor="mm"
+    )
+    y += 35
+
+    # CODE
+    draw.text(
+        (width // 2, y),
+        f"CODE: {code}",
+        fill="black",
+        font=text_font,
+        anchor="mm"
+    )
+    y += 28
+
+    # PIN
+    draw.text(
+        (width // 2, y),
+        f"PIN: {pin}",
+        fill="black",
+        font=text_font,
+        anchor="mm"
+    )
+
+    # --- Save ---
     folder = f"static/vouchers/mall_{mall_id}/{profile}"
     os.makedirs(folder, exist_ok=True)
-
     path = f"{folder}/{code}.png"
-    new_img.save(path)
 
+    img.save(path, dpi=(300, 300))
     return path

@@ -13,7 +13,7 @@ from app.repositories.subscription_repository import SubscriptionRepository
 router = APIRouter(prefix="/subscriptions", tags=["Subscriptions"])
 
 
-@router.post("/", response_model=SubscriptionResponse)
+@router.post("", response_model=SubscriptionResponse)
 def create_subscription_form(
     mall_id: int = Form(...),
     package_id: int = Form(...),
